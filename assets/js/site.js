@@ -43,7 +43,7 @@ function initApp() {
 function setupStatics() {
 console.log('setupStatics called');
     const newButton = document.getElementById('newListButton');
-    newListButton.addEventListener('click', newCallback);
+    newButton.addEventListener('click', newCallback);
       listView();
 }
 
@@ -81,6 +81,21 @@ function newCallback() {
     newListCreationView();
 }
 
+function itemClickCallback(action, index){
+    activeList = index;
+
+    switch (action) {
+        case 'editItem' :
+            console.log(action, index);
+            break;
+        case 'deleteItem' :
+            console.log(action, index);
+            break;  
+
+        default:
+            break;
+    }
+}
 //---------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
 // #endregion
@@ -112,12 +127,17 @@ function newListCreationView() {
             return;
         }
 
-        // create new list object
-        const newList = {
-            id: Date.now(), // unik id
-            name: newName,
-            items: []
-        };
+        // find max id and increment for new list
+        const maxId = currentData.lists.length > 0
+            ? Math.max(...currentData.lists.map(list => list.id))
+            : 0;
+
+            // create new list object
+            const newList = {
+                ...dummyData.lists[0], // copy structure from dummy
+                id: maxId + 1,
+                name: newName,
+            };
 
         // update model
         currentData.lists.push(newList);
