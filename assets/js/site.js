@@ -52,10 +52,30 @@ console.log('setupStatics called');
 // #region callbacks
 //---------------------------------------------------------------------------------------------------------------------
 //- Callbacks with switch to handle different functions and appState
+function listClickCallback(action, index){
+    activeList = index;
+        switch (action) {
+            case 'showList':
+                console.log(action, index);
+                listItemView();
+            break;
+            case 'editList' :
+                console.log(action, index);
+            break;
+
+            case 'deleteList' :
+                console.log(action, index);
+            break;
+
+            default:
+                console.error('Unknown action: ' + action + index);
+            break;
+    }
+}
 //---------------------------------------------------------------------------------------------------------------------
 
 // Callback for creating a new list (model code) with switch and appState
-
+function newCallback(){}
 
 //---------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
