@@ -75,7 +75,11 @@ function listClickCallback(action, index){
 //---------------------------------------------------------------------------------------------------------------------
 
 // Callback for creating a new list (model code) with switch and appState
-function newCallback(){}
+function newCallback() {
+    console.log("newCallback called");
+    appState = "newList";
+    newListCreationView();
+}
 
 //---------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
@@ -84,43 +88,53 @@ function newCallback(){}
 // #region view functions
 // view code to create a new list creation view
 function newListCreationView() {
-    // Get the content element
     const content = document.getElementById('content');
-    
-    // Clear the content
     content.innerHTML = '';
-    
-    // Create a section container
+
     const section = document.createElement('section');
-    
-    // Create label
+
     const label = document.createElement('label');
     label.textContent = 'Name:';
     label.setAttribute('for', 'listName');
-    
-    // Create text input
+
     const input = document.createElement('input');
     input.type = 'text';
     input.id = 'listName';
-    input.value = 'default name';
-    
-    // Create OK button
+    input.placeholder = 'Enter list name';
+
+    // OK button
     const okButton = document.createElement('button');
     okButton.textContent = 'OK';
     okButton.addEventListener('click', () => {
-        console.log('OK clicked, list name:', input.value);
+        const newName = input.value.trim();
+        if (newName.length === 0) {
+            alert("List name cannot be empty!");
+            return;
+        }
+
+        // create new list object
+        const newList = {
+            id: Date.now(), // unik id
+            name: newName,
+            items: []
+        };
+
+        // update model
+        currentData.lists.push(newList);
+        saveData(currentData);
+
+        console.log("New list added:", newList);
         listView();
     });
-    
-    // Create Cancel button
+
+    // Cancel button
     const cancelButton = document.createElement('button');
     cancelButton.textContent = 'Cancel';
     cancelButton.addEventListener('click', () => {
         console.log('Cancel clicked');
-      listView();
+        listView();
     });
-    
-    // Append all elements to the section
+
     section.appendChild(label);
     section.appendChild(input);
     section.appendChild(okButton);
