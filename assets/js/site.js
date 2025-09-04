@@ -80,22 +80,24 @@ function newCallback() {
     appState = "newList";
     newListCreationView();
 }
-
-function itemClickCallback(action, index){
-    activeList = index;
-
-    switch (action) {
-        case 'editItem' :
-            console.log(action, index);
+function newItemCallback() {
+    console.log("newItemCallback called");
+    appState = "newItem";
+    newItemCreationView();
+    switch (appState) {
+        case 'listView':
+            newListCreationView();
             break;
-        case 'deleteItem' :
-            console.log(action, index);
-            break;  
-
+        case 'itemView':
+            newItemCreationView();
+            break;
         default:
+            console.error('Unknown appState: ' + appState);
             break;
     }
 }
+
+
 //---------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------
 // #endregion
@@ -121,29 +123,29 @@ function newListCreationView() {
     const okButton = document.createElement('button');
     okButton.textContent = 'OK';
     okButton.addEventListener('click', () => {
-        const newName = input.value.trim();
-        if (newName.length === 0) {
-            alert("List name cannot be empty!");
-            return;
-        }
+        // const newName = input.value.trim();
+        // if (newName.length === 0) {
+        //     ;
+        //     return;
+        // }
 
-        // find max id and increment for new list
-        const maxId = currentData.lists.length > 0
-            ? Math.max(...currentData.lists.map(list => list.id))
-            : 0;
+        // // find max id and increment for new list
+        // const maxId = currentData.lists.length > 0
+        //     ? Math.max(...currentData.lists.map(list => list.id))
+        //     : 0;
 
-            // create new list object
-            const newList = {
-                ...dummyData.lists[0], // copy structure from dummy
-                id: maxId + 1,
-                name: newName,
-            };
+        //     // create new list object
+        //     const newList = {
+        //         ...dummyData.lists[0], // copy structure from dummy
+        //         id: maxId + 1,
+        //         name: newName,
+        //     };
 
-        // update model
-        currentData.lists.push(newList);
-        saveData(currentData);
+        // // update model
+        // currentData.lists.push(newList);
+        // saveData(currentData);
 
-        console.log("New list added:", newList);
+        // console.log("New list added:", newList);
         listView();
     });
 
